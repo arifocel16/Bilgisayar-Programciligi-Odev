@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="tr" data-bs-theme="dark">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Butik Kafe - Yeni Üye Kaydı">
+  <title>Butik Kafe · Kayıt Ol</title>
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <style>
+    :root {
+      --cafe-primary: #c59b6d;
+      --cafe-hover: #a88158;
+    }
+
+    body {
+      min-height: 100vh;
+      padding-top: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+      background: linear-gradient(rgba(15, 15, 18, 0.86), rgba(15, 15, 18, 0.95)),
+        url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        background-attachment: scroll;
+      }
+    }
+
+    .cafe-feedback {
+      border-radius: 10px;
+      padding: 0.6rem 0.85rem;
+      font-size: 0.83rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      transition: all 0.25s ease;
+    }
+
+    .cafe-feedback.is-warning {
+      background-color: rgba(255, 193, 7, 0.12);
+      border: 1px solid rgba(255, 193, 7, 0.45);
+      color: #ffda6a;
+    }
+
+    .cafe-feedback.is-danger {
+      background-color: rgba(220, 53, 69, 0.14);
+      border: 1px solid rgba(220, 53, 69, 0.45);
+      color: #ea868f;
+    }
+
+    .cafe-feedback.is-success {
+      background-color: rgba(25, 135, 84, 0.16);
+      border: 1px solid rgba(25, 135, 84, 0.5);
+      color: #75b798;
+    }
+
+    .cafe-feedback.is-info {
+      background-color: rgba(197, 155, 109, 0.14);
+      border: 1px solid rgba(197, 155, 109, 0.45);
+      color: #e2c5a3;
+    }
+
+    .cart-badge-count {
+      display: inline-flex;
+      background-color: var(--cafe-primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      min-width: 1.35rem;
+      height: 1.35rem;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .btn-remove-cart {
+      background-color: rgba(220, 53, 69, 0.14);
+      border: 1px solid rgba(220, 53, 69, 0.45);
+      color: #ea868f;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-remove-cart:hover {
+      background-color: #dc3545;
+      border-color: #dc3545;
+      color: #fff;
+    }
+
+    .btn-qty-cart {
+      background-color: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-qty-cart:hover {
+      background-color: var(--cafe-primary);
+      border-color: var(--cafe-primary);
+      color: #fff;
+    }
+
+    .btn-primary {
+      background-color: var(--cafe-primary);
+      border-color: var(--cafe-primary);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active {
+      background-color: var(--cafe-hover) !important;
+      border-color: var(--cafe-hover) !important;
+      color: #fff !important;
+      box-shadow: 0 0 0 0.25rem rgba(197, 155, 109, 0.4) !important;
+    }
+
+    .btn-outline-cafe {
+      border: 1px solid var(--cafe-primary);
+      color: var(--cafe-primary);
+      background: transparent;
+      transition: all 0.25s ease;
+    }
+
+    .btn-outline-cafe:hover {
+      background-color: var(--cafe-primary);
+      border-color: var(--cafe-primary);
+      color: #fff;
+    }
+
+    .btn-wheel {
+      background-color: rgba(197, 155, 109, 0.16);
+      border: 1px solid rgba(197, 155, 109, 0.55);
+      color: var(--cafe-primary);
+      transition: all 0.3s ease;
+    }
+
+    .btn-wheel:hover {
+      background-color: var(--cafe-primary);
+      border-color: var(--cafe-primary);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(197, 155, 109, 0.45);
+    }
+
+    .auth-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1rem;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 480px;
+      background-color: rgba(24, 27, 32, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+    }
+
+    .brand-icon-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: rgba(197, 155, 109, 0.15);
+      border: 1px solid rgba(197, 155, 109, 0.45);
+      color: var(--cafe-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.65rem;
+    }
+
+    .form-control:focus {
+      border-color: var(--cafe-primary);
+      box-shadow: 0 0 0 0.25rem rgba(197, 155, 109, 0.28);
+    }
+
+    .form-check-input:checked {
+      background-color: var(--cafe-primary);
+      border-color: var(--cafe-primary);
+    }
+
+    .form-check-input:focus {
+      box-shadow: 0 0 0 0.2rem rgba(197, 155, 109, 0.25);
+    }
+
+    .auth-link {
+      color: var(--cafe-primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .auth-link:hover {
+      color: #e0b889;
+      text-decoration: underline;
+    }
+
+    .perk-strip {
+      background-color: rgba(197, 155, 109, 0.12);
+      border: 1px dashed rgba(197, 155, 109, 0.45);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      font-size: 0.82rem;
+      color: #e3c8a8;
+    }
+
+    .wheel-stage {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 0 auto;
+    }
+
+    .wheel-pointer {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 24px solid #fff;
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.85));
+      z-index: 10;
+    }
+
+    .wheel-disc {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 6px solid var(--cafe-primary);
+      box-shadow: 0 0 0 4px rgba(197, 155, 109, 0.25), 0 14px 35px rgba(0, 0, 0, 0.75);
+      position: relative;
+      overflow: hidden;
+      transform: rotate(0deg);
+      transition: transform 3.5s cubic-bezier(0.15, 0.88, 0.25, 1);
+      background:
+        repeating-conic-gradient(from -30deg,
+          rgba(255, 255, 255, 0.14) 0deg 1deg,
+          transparent 1deg 60deg),
+        conic-gradient(from -30deg,
+          #8c663e 0deg 60deg,
+          #26292e 60deg 120deg,
+          #b08556 120deg 180deg,
+          #1f2227 180deg 240deg,
+          #755331 240deg 300deg,
+          #2b2520 300deg 360deg);
+    }
+
+    .wheel-center-cap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: #16181c;
+      border: 3px solid var(--cafe-primary);
+      color: var(--cafe-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.75);
+      z-index: 5;
+    }
+
+    .wheel-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 92px;
+      transform-origin: 0 50%;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
+      pointer-events: none;
+      line-height: 1.2;
+    }
+
+    .wheel-label.slice-1 {
+      transform: translateY(-50%) rotate(-90deg) translateX(36px);
+    }
+
+    .wheel-label.slice-2 {
+      transform: translateY(-50%) rotate(-30deg) translateX(36px);
+    }
+
+    .wheel-label.slice-3 {
+      transform: translateY(-50%) rotate(30deg) translateX(36px);
+    }
+
+    .wheel-label.slice-4 {
+      transform: translateY(-50%) rotate(90deg) translateX(36px);
+    }
+
+    .wheel-label.slice-5 {
+      transform: translateY(-50%) rotate(150deg) translateX(36px);
+    }
+
+    .wheel-label.slice-6 {
+      transform: translateY(-50%) rotate(210deg) translateX(36px);
+    }
+
+    .coupon-box {
+      background-color: rgba(197, 155, 109, 0.14);
+      border: 1px dashed var(--cafe-primary);
+      border-radius: 12px;
+      padding: 1rem;
+      min-height: 126px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @keyframes prizePopIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.92);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .prize-reveal-anim {
+      animation: prizePopIn 0.35s ease forwards;
+    }
+
+    .order-receipt-card {
+      background-color: #16181d;
+      border: 1px solid rgba(197, 155, 109, 0.35);
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      text-align: left;
+      font-size: 0.82rem;
+    }
+
+    .receipt-dashed-divider {
+      border-top: 1px dashed rgba(255, 255, 255, 0.18);
+      margin: 0.65rem 0;
+    }
+
+    .footer-link {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--cafe-primary);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    #wheelSpinToggle:checked~.wheel-stage .wheel-disc {
+      transform: rotate(1980deg);
+    }
+
+    #wheelSpinToggle:checked~.wheel-spin-btn {
+      pointer-events: none;
+      opacity: 0.72;
+    }
+
+    #wheelSpinToggle:checked~.wheel-spin-btn .spin-label-default {
+      display: none;
+    }
+
+    #wheelSpinToggle:checked~.wheel-spin-btn .spin-label-done {
+      display: inline;
+    }
+
+    .spin-label-done {
+      display: none;
+    }
+
+    .wheel-result-after {
+      display: none;
+      opacity: 0;
+    }
+
+    @keyframes revealWheelPrize {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #wheelSpinToggle:checked~.coupon-box .wheel-result-before {
+      display: none;
+    }
+
+    #wheelSpinToggle:checked~.coupon-box .wheel-result-after {
+      display: block;
+      animation: revealWheelPrize 0.5s ease 3.35s forwards;
+    }
+
+    .coupon-pill-label {
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+
+    .coupon-status-msg,
+    .coupon-discount-val,
+    .coupon-total-val,
+    .cart-discount-active,
+    .coupon-clear-label {
+      display: none;
+    }
+
+    #couponNone:checked~.coupon-status-wrap .status-none,
+    #couponKAHVE20:checked~.coupon-status-wrap .status-kahve20,
+    #couponCAY25:checked~.coupon-status-wrap .status-cay25,
+    #couponTATLI15:checked~.coupon-status-wrap .status-tatli15,
+    #couponKURABIYE:checked~.coupon-status-wrap .status-kurabiye,
+    #couponEXTRASHOT:checked~.coupon-status-wrap .status-extrashot,
+    #couponSURUPFREE:checked~.coupon-status-wrap .status-surupfree {
+      display: flex;
+    }
+
+    #couponNone:checked~.totals-wrap .total-none,
+    #couponKAHVE20:checked~.totals-wrap .total-kahve20,
+    #couponCAY25:checked~.totals-wrap .total-cay25,
+    #couponTATLI15:checked~.totals-wrap .total-tatli15,
+    #couponKURABIYE:checked~.totals-wrap .total-kurabiye,
+    #couponEXTRASHOT:checked~.totals-wrap .total-extrashot,
+    #couponSURUPFREE:checked~.totals-wrap .total-surupfree {
+      display: inline;
+    }
+
+    #couponKAHVE20:checked~.totals-wrap .cart-discount-active,
+    #couponCAY25:checked~.totals-wrap .cart-discount-active,
+    #couponTATLI15:checked~.totals-wrap .cart-discount-active,
+    #couponKURABIYE:checked~.totals-wrap .cart-discount-active,
+    #couponEXTRASHOT:checked~.totals-wrap .cart-discount-active,
+    #couponSURUPFREE:checked~.totals-wrap .cart-discount-active {
+      display: flex !important;
+    }
+
+    #couponKAHVE20:checked~.totals-wrap .disc-kahve20,
+    #couponCAY25:checked~.totals-wrap .disc-cay25,
+    #couponTATLI15:checked~.totals-wrap .disc-tatli15,
+    #couponKURABIYE:checked~.totals-wrap .disc-kurabiye,
+    #couponEXTRASHOT:checked~.totals-wrap .disc-extrashot,
+    #couponSURUPFREE:checked~.totals-wrap .disc-surupfree {
+      display: inline;
+    }
+
+    #couponKAHVE20:checked~.coupon-pills-wrap .coupon-clear-label,
+    #couponCAY25:checked~.coupon-pills-wrap .coupon-clear-label,
+    #couponTATLI15:checked~.coupon-pills-wrap .coupon-clear-label,
+    #couponKURABIYE:checked~.coupon-pills-wrap .coupon-clear-label,
+    #couponEXTRASHOT:checked~.coupon-pills-wrap .coupon-clear-label,
+    #couponSURUPFREE:checked~.coupon-pills-wrap .coupon-clear-label {
+      display: inline-block;
+    }
+
+    #couponKAHVE20:checked~.coupon-pills-wrap label[for="couponKAHVE20"],
+    #couponCAY25:checked~.coupon-pills-wrap label[for="couponCAY25"],
+    #couponTATLI15:checked~.coupon-pills-wrap label[for="couponTATLI15"],
+    #couponKURABIYE:checked~.coupon-pills-wrap label[for="couponKURABIYE"],
+    #couponEXTRASHOT:checked~.coupon-pills-wrap label[for="couponEXTRASHOT"],
+    #couponSURUPFREE:checked~.coupon-pills-wrap label[for="couponSURUPFREE"] {
+      background-color: var(--cafe-primary);
+      color: #fff;
+      border-color: var(--cafe-primary);
+    }
+
+    .target-feedback-box {
+      display: none;
+    }
+
+    .target-feedback-box:target {
+      display: flex !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header data-bs-theme="dark">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark border-bottom border-secondary">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="index.html" style="color: var(--cafe-primary);">Butik Kafe</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Menüyü Aç">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item"> <a class="nav-link" href="index.html">Ana Sayfa</a> </li>
+            <li class="nav-item"> <a class="nav-link" href="menu.html">Menü</a> </li>
+            <li class="nav-item"> <a class="nav-link" href="index.html#hakkimizda">Hakkımızda</a> </li>
+          </ul>
+          <button type="button" class="btn btn-wheel me-2 mb-2 mb-md-0" data-bs-toggle="modal"
+            data-bs-target="#coffeeWheelModal">
+            <i class="bi bi-stars me-1"></i>Şansını Dene
+          </button>
+          <form class="d-flex me-2 mb-2 mb-md-0" role="search" action="menu.html" method="get">
+            <input class="form-control me-2 bg-dark text-white border-secondary" type="search" name="q"
+              placeholder="Menüde ara..." aria-label="Ara">
+            <button class="btn btn-outline-light" type="submit">Ara</button>
+          </form>
+          <button type="button" class="btn btn-outline-light position-relative me-2 mb-2 mb-md-0"
+            data-bs-toggle="offcanvas" data-bs-target="#cafeCartOffcanvas" aria-controls="cafeCartOffcanvas">
+            <i class="bi bi-bag me-1" style="color: var(--cafe-primary);"></i>Sepetim
+            <span id="cartBadgeCount"
+              class="cart-badge-count position-absolute top-0 start-100 translate-middle badge rounded-pill">2</span>
+          </button>
+          <div id="navAuthArea">
+            <a href="giris.html" id="navLoginLink" class="btn btn-primary me-2">Giriş Yap</a>
+            <a href="kayitol.html" class="btn btn-outline-light active" aria-current="page">Kayıt Ol</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="auth-wrapper">
+    <div class="auth-card">
+      <div class="text-center mb-4">
+        <div class="brand-icon-circle mb-3">
+          <i class="bi bi-person-plus-fill"></i>
+        </div>
+        <h1 class="h3 fw-normal text-white mb-1">Butik Kafe Ailesine Katılın</h1>
+        <p class="text-white-50 small mb-0">Hemen üye olun, kahve çarkı ödüllerinizi ve masa siparişlerinizi kolayca
+          yönetin.</p>
+      </div>
+
+      <div id="alreadyLoggedInBox" class="d-none mb-3"></div>
+
+      <div class="perk-strip d-flex align-items-center mb-4">
+        <i class="bi bi-gift-fill fs-5 me-2" style="color: var(--cafe-primary);"></i>
+        <span>Üyelere özel her ziyarette <strong>Sürpriz Kahve Çarkı</strong> ve hızlı sipariş avantajı!</span>
+      </div>
+
+      <form id="registerForm" action="giris.html" method="get">
+        <div class="row g-2 mb-3">
+          <div class="col-sm-6">
+            <div class="form-floating">
+              <input type="text" class="form-control bg-dark text-white border-secondary" id="regFirstName"
+                name="firstName" placeholder="Adınız" required>
+              <label for="regFirstName" class="text-white-50">Adınız</label>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-floating">
+              <input type="text" class="form-control bg-dark text-white border-secondary" id="regLastName"
+                name="lastName" placeholder="Soyadınız" required>
+              <label for="regLastName" class="text-white-50">Soyadınız</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="email" class="form-control bg-dark text-white border-secondary" id="regEmail" name="email"
+            placeholder="ornek@eposta.com" required>
+          <label for="regEmail" class="text-white-50">E-posta Adresi</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="tel" class="form-control bg-dark text-white border-secondary" id="regPhone" name="phone"
+            placeholder="05XX XXX XX XX" required>
+          <label for="regPhone" class="text-white-50">Telefon Numarası</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control bg-dark text-white border-secondary" id="regPassword"
+            name="password" placeholder="Şifre Oluşturun" minlength="6" required>
+          <label for="regPassword" class="text-white-50">Şifre (En az 6 karakter)</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control bg-dark text-white border-secondary" id="regPasswordConfirm"
+            name="passwordConfirm" placeholder="Şifreyi Onaylayın" minlength="6" required>
+          <label for="regPasswordConfirm" class="text-white-50">Şifre Tekrar</label>
+        </div>
+
+        <div class="form-check mb-3">
+          <input class="form-check-input bg-dark border-secondary" type="checkbox" id="termsCheck" required>
+          <label class="form-check-label small text-white-50" for="termsCheck">
+            <a href="#" class="auth-link" data-bs-toggle="modal" data-bs-target="#termsModal">Üyelik koşullarını</a> ve
+            <a href="#" class="auth-link" data-bs-toggle="modal" data-bs-target="#privacyModal">gizlilik
+              politikasını</a> okudum, kabul ediyorum.
+          </label>
+        </div>
+
+        <div id="registerFeedback" class="d-none mb-3"></div>
+
+        <button class="btn btn-primary w-100 py-2 fw-medium mb-3" type="submit">
+          <i class="bi bi-check2-circle me-1"></i>Üyeliği Tamamla
+        </button>
+
+        <div class="text-center">
+          <span class="text-white-50 small">Zaten hesabınız var mı?</span>
+          <a href="giris.html" id="toLoginLink" class="auth-link small ms-1">Giriş Yapın</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="container py-3 border-top border-secondary border-opacity-25">
+    <div class="row align-items-center gy-2">
+      <div class="col-md-6 text-center text-md-start">
+        <p class="text-white-50 small mb-0">
+          &copy; 2026 Butik Kafe İşletmesi &middot;
+          <a href="#" class="footer-link" data-bs-toggle="modal" data-bs-target="#privacyModal">Gizlilik</a> &middot;
+          <a href="#" class="footer-link" data-bs-toggle="modal" data-bs-target="#termsModal">Şartlar</a>
+        </p>
+      </div>
+      <div class="col-md-6 text-center text-md-end">
+        <a href="index.html" class="footer-link small">Ana Sayfaya Dön</a>
+      </div>
+    </div>
+  </footer>
+  <div class="modal fade" id="privacyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white border-secondary" style="border-radius: 18px;">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title fw-normal" style="color: var(--cafe-primary);">
+            <i class="bi bi-shield-check me-2"></i>Gizlilik Politikası
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+        </div>
+        <div class="modal-body small text-white-50" style="line-height: 1.65;">
+          <p class="mb-2">Butik Kafe olarak misafirlerimizin kişisel verilerinin gizliliğine önem veriyoruz. Üyelik,
+            masa rezervasyonu ve sipariş süreçlerinde paylaşılan ad, e-posta ve iletişim bilgileri yalnızca hizmet
+            kalitesini artırmak ve siparişlerinizi hazırlamak amacıyla kullanılır.</p>
+          <p class="mb-0">Kişisel verileriniz üçüncü taraflarla ticari amaçla paylaşılmaz ve KVKK kapsamında güvenli
+            şekilde saklanır.</p>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button type="button" class="btn btn-primary btn-sm px-4" data-bs-dismiss="modal">Anladım</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="termsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white border-secondary" style="border-radius: 18px;">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title fw-normal" style="color: var(--cafe-primary);">
+            <i class="bi bi-file-earmark-text me-2"></i>Kullanım Şartları
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+        </div>
+        <div class="modal-body small text-white-50" style="line-height: 1.65;">
+          <p class="mb-2">Web sitemiz üzerinden oluşturulan siparişler seçtiğiniz masa numarasına veya gel-al noktasına
+            taze olarak hazırlanır. Sürpriz Kahve Çarkı kampanya kodları tek siparişte bir adet olacak şekilde
+            geçerlidir.</p>
+          <p class="mb-0">Ürün içerikleri ve alerjen bilgileri hakkında detaylı destek almak için baristalarımıza
+            danışabilirsiniz.</p>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button type="button" class="btn btn-primary btn-sm px-4" data-bs-dismiss="modal">Anladım</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="coffeeWheelModal" tabindex="-1" aria-labelledby="coffeeWheelModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white border-secondary" style="border-radius: 20px;">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title fw-normal" id="coffeeWheelModalLabel">
+            <i class="bi bi-stars me-2" style="color: var(--cafe-primary);"></i>Günün Sürpriz Kahve Çarkı
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <p class="text-white-50 small mb-4">Her ziyarette çarkı <strong>1 kez</strong> çevirebilirsin. 6 farklı
+            hediyeden biri şansına göre senin!</p>
+
+          <input type="checkbox" id="wheelSpinToggle" class="d-none">
+
+          <div class="wheel-stage mb-3">
+            <div class="wheel-pointer"></div>
+            <div class="wheel-disc" id="coffeeWheelDisc">
+              <div class="wheel-label slice-1">Tatlıda<br>%15 İndirim</div>
+              <div class="wheel-label slice-2">Ücretsiz<br>Ekstra Shot</div>
+              <div class="wheel-label slice-3">Kurabiye<br>İkramı</div>
+              <div class="wheel-label slice-4">Kahvede<br>%20 İndirim</div>
+              <div class="wheel-label slice-5">Çaylarda<br>%25 İndirim</div>
+              <div class="wheel-label slice-6">Ücretsiz<br>Şurup</div>
+            </div>
+            <div class="wheel-center-cap">
+              <i class="bi bi-cup-hot-fill"></i>
+            </div>
+          </div>
+
+          <label for="wheelSpinToggle" id="spinWheelBtn" class="btn btn-primary px-4 py-2 mb-3 wheel-spin-btn"
+            style="cursor: pointer;">
+            <span class="spin-label-default"><i class="bi bi-arrow-repeat me-1"></i>Çarkı Çevir</span>
+            <span class="spin-label-done"><i class="bi bi-check2-circle me-1"></i>Çark Çevrildi</span>
+          </label>
+
+          <div class="coupon-box mt-2" id="wheelCouponBox">
+            <div class="text-white-50 small wheel-result-before">
+              <i class="bi bi-gift fs-4 d-block mb-1" style="color: var(--cafe-primary);"></i>
+              Kupon kodunu görmek için yukarıdaki <strong>Çarkı Çevir</strong> butonuna bas!
+            </div>
+            <div class="wheel-result-after">
+              <span class="badge rounded-pill mb-2 px-3 py-1"
+                style="background-color: rgba(197, 155, 109, 0.2); color: var(--cafe-primary); border: 1px solid rgba(197, 155, 109, 0.45);">
+                <i class="bi bi-trophy-fill me-1"></i>Tebrikler! Kahvede %20 İndirim Kazandınız
+              </span>
+              <div class="fs-5 fw-bold tracking-wide text-white mb-1" style="letter-spacing: 0.12rem;">KAHVE20</div>
+              <p class="small text-white-50 mb-0">Bu kodu <strong>Sepetim</strong> çekmecesindeki kupon bölümünden tek
+                tıkla uygulayabilirsiniz.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="offcanvas offcanvas-end bg-dark text-white border-start border-secondary" tabindex="-1"
+    id="cafeCartOffcanvas" aria-labelledby="cafeCartOffcanvasLabel">
+    <div class="offcanvas-header border-bottom border-secondary">
+      <h5 class="offcanvas-title fw-normal" id="cafeCartOffcanvasLabel">
+        <i class="bi bi-bag-heart me-2" style="color: var(--cafe-primary);"></i>Sipariş Sepetim
+      </h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Kapat"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column justify-content-between">
+      <div id="cartItemsContainer" class="d-flex flex-column gap-2">
+        <div
+          class="p-2 px-3 rounded-3 border border-secondary border-opacity-50 d-flex justify-content-between align-items-center"
+          style="background-color: rgba(255,255,255,0.03);">
+          <div>
+            <div class="fw-medium text-white small">V60 Pour Over</div>
+            <div class="text-white-50" style="font-size: 0.74rem;">1 Adet · Orta Boy · Sıcak</div>
+          </div>
+          <span class="fw-semibold small" style="color: var(--cafe-primary);">95 ₺</span>
+        </div>
+
+        <div
+          class="p-2 px-3 rounded-3 border border-secondary border-opacity-50 d-flex justify-content-between align-items-center"
+          style="background-color: rgba(255,255,255,0.03);">
+          <div>
+            <div class="fw-medium text-white small">San Sebastian Cheesecake</div>
+            <div class="text-white-50" style="font-size: 0.74rem;">1 Dilim · Günlük Taze</div>
+          </div>
+          <span class="fw-semibold small" style="color: var(--cafe-primary);">135 ₺</span>
+        </div>
+
+        <div class="text-end mt-1">
+          <a href="menu.html" class="small text-decoration-none" style="color: var(--cafe-primary);">
+            <i class="bi bi-plus-circle me-1"></i>Menüden Ürün Ekle
+          </a>
+        </div>
+      </div>
+
+      <div class="border-top border-secondary pt-3 mt-3">
+        <input type="radio" name="cartCouponRadio" id="couponNone" class="d-none" checked>
+        <input type="radio" name="cartCouponRadio" id="couponKAHVE20" class="d-none">
+        <input type="radio" name="cartCouponRadio" id="couponCAY25" class="d-none">
+        <input type="radio" name="cartCouponRadio" id="couponTATLI15" class="d-none">
+        <input type="radio" name="cartCouponRadio" id="couponKURABIYE" class="d-none">
+        <input type="radio" name="cartCouponRadio" id="couponEXTRASHOT" class="d-none">
+        <input type="radio" name="cartCouponRadio" id="couponSURUPFREE" class="d-none">
+
+        <div class="totals-wrap">
+          <div class="d-flex justify-content-between align-items-center mb-1 small text-white-50">
+            <span>Ara Toplam:</span>
+            <span>230 ₺</span>
+          </div>
+
+          <div class="cart-discount-active justify-content-between align-items-center mb-2 small text-success">
+            <span>Kupon Avantajı:</span>
+            <span>
+              <span class="coupon-discount-val disc-kahve20">-19 ₺ (Kahvede %20)</span>
+              <span class="coupon-discount-val disc-cay25">-20 ₺ (Çaylarda %25)</span>
+              <span class="coupon-discount-val disc-tatli15">-20 ₺ (Tatlıda %15)</span>
+              <span class="coupon-discount-val disc-kurabiye">Kurabiye İkramı</span>
+              <span class="coupon-discount-val disc-extrashot">Ücretsiz Ekstra Shot</span>
+              <span class="coupon-discount-val disc-surupfree">Ücretsiz Şurup</span>
+            </span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-white-50 small">Genel Toplam:</span>
+            <strong class="fs-5" style="color: var(--cafe-primary);">
+              <span class="coupon-total-val total-none">230 ₺</span>
+              <span class="coupon-total-val total-kahve20">211 ₺</span>
+              <span class="coupon-total-val total-cay25">210 ₺</span>
+              <span class="coupon-total-val total-tatli15">210 ₺</span>
+              <span class="coupon-total-val total-kurabiye">230 ₺ + İkram</span>
+              <span class="coupon-total-val total-extrashot">230 ₺ + Shot</span>
+              <span class="coupon-total-val total-surupfree">230 ₺ + Şurup</span>
+            </strong>
+          </div>
+        </div>
+
+        <div class="mb-3 coupon-pills-wrap">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="small text-white-50"><i class="bi bi-stars me-1"
+                style="color: var(--cafe-primary);"></i>Kampanya &amp; Çark Kodları (Seç):</span>
+            <label for="couponNone"
+              class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50 coupon-clear-label"
+              style="cursor: pointer; font-size: 0.68rem;">Kaldır</label>
+          </div>
+          <div class="d-flex flex-wrap gap-1">
+            <label for="couponKAHVE20" class="btn btn-sm btn-outline-cafe py-0 px-2 coupon-pill-label"
+              style="font-size: 0.7rem;">KAHVE20</label>
+            <label for="couponCAY25" class="btn btn-sm btn-outline-cafe py-0 px-2 coupon-pill-label"
+              style="font-size: 0.7rem;">CAY25</label>
+            <label for="couponTATLI15" class="btn btn-sm btn-outline-cafe py-0 px-2 coupon-pill-label"
+              style="font-size: 0.7rem;">TATLI15</label>
+            <label for="couponKURABIYE" class="btn btn-sm btn-outline-cafe py-0 px-2 coupon-pill-label"
+              style="font-size: 0.7rem;">KURABIYE</label>
+            <label for="couponEXTRASHOT" class="btn btn-sm btn-outline-cafe py-0 px-2 coupon-pill-label"
+              style="font-size: 0.7rem;">EXTRASHOT</label>
+            <label for="couponSURUPFREE" class="btn btn-sm btn-outline-cafe py-0 px-2 coupon-pill-label"
+              style="font-size: 0.7rem;">SURUPFREE</label>
+          </div>
+        </div>
+
+        <div class="coupon-status-wrap mb-3">
+          <div class="cafe-feedback is-info coupon-status-msg status-none">
+            <i class="bi bi-ticket-perforated"></i>
+            <span>Uygulamak istediğiniz kupon koduna tıklayın.</span>
+          </div>
+          <div class="cafe-feedback is-success coupon-status-msg status-kahve20">
+            <i class="bi bi-check-circle-fill"></i>
+            <span><strong>KAHVE20</strong> uygulandı! Kahve ürünlerinde %20 indirim aktif.</span>
+          </div>
+          <div class="cafe-feedback is-success coupon-status-msg status-cay25">
+            <i class="bi bi-check-circle-fill"></i>
+            <span><strong>CAY25</strong> uygulandı! Bitki çaylarında %25 indirim aktif.</span>
+          </div>
+          <div class="cafe-feedback is-success coupon-status-msg status-tatli15">
+            <i class="bi bi-check-circle-fill"></i>
+            <span><strong>TATLI15</strong> uygulandı! Tatlılarda %15 indirim aktif.</span>
+          </div>
+          <div class="cafe-feedback is-success coupon-status-msg status-kurabiye">
+            <i class="bi bi-check-circle-fill"></i>
+            <span><strong>KURABIYE</strong> uygulandı! Siparişinize taze kurabiye ikramı eklendi.</span>
+          </div>
+          <div class="cafe-feedback is-success coupon-status-msg status-extrashot">
+            <i class="bi bi-check-circle-fill"></i>
+            <span><strong>EXTRASHOT</strong> uygulandı! Kahvenize ücretsiz ekstra shot eklendi.</span>
+          </div>
+          <div class="cafe-feedback is-success coupon-status-msg status-surupfree">
+            <i class="bi bi-check-circle-fill"></i>
+            <span><strong>SURUPFREE</strong> uygulandı! Seçtiğiniz aroma şurubu ücretsiz.</span>
+          </div>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text bg-dark border-secondary text-white-50">Teslimat</span>
+          <select class="form-select bg-dark border-secondary text-white" id="cartDeliverySelect">
+            <option value="Gel-Al (Paket)">Gel-Al (Paket)</option>
+            <option value="Masa 1 (Pencere Kenarı)" selected>Masa 1 (Pencere Kenarı)</option>
+            <option value="Masa 2 (İç Mekân)">Masa 2 (İç Mekân)</option>
+            <option value="Masa 3 (Bahçe)">Masa 3 (Bahçe)</option>
+            <option value="Masa 4 (Çalışma Alanı)">Masa 4 (Çalışma Alanı)</option>
+          </select>
+        </div>
+
+        <button type="button" id="completeOrderBtn" class="btn btn-primary w-100 py-2" data-bs-toggle="modal"
+          data-bs-target="#orderConfirmedModal">
+          <i class="bi bi-check2-circle me-1"></i>Siparişi Tamamla
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="orderConfirmedModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white border-secondary text-center p-3" style="border-radius: 20px;">
+        <div class="modal-body">
+          <i class="bi bi-check-circle-fill fs-1 mb-2 d-block" style="color: var(--cafe-primary);"></i>
+          <h5 class="fw-normal mb-1">Siparişiniz Alındı!</h5>
+          <p class="small text-white-50 mb-3">Baristalarımız seçiminizi özenle hazırlamaya başladı.</p>
+
+          <div class="order-receipt-card mb-3 text-start">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="fw-semibold" style="color: var(--cafe-primary);">BUTİK KAFE · SİPARİŞ FİŞİ</span>
+              <span class="badge bg-dark border border-secondary text-white">#BK-1042</span>
+            </div>
+            <div class="text-white-50" style="font-size: 0.74rem;">Durum: Hazırlanıyor · Tahmini Süre: 8-10 dk</div>
+            <div class="text-white-50" style="font-size: 0.74rem;">Teslimat: <strong class="text-white">Masa 1 (Pencere
+                Kenarı)</strong></div>
+
+            <div class="receipt-dashed-divider"></div>
+
+            <div class="d-flex flex-column gap-2 small">
+              <div class="d-flex justify-content-between">
+                <span>1x V60 Pour Over</span>
+                <span class="text-white-50">95 ₺</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>1x San Sebastian Cheesecake</span>
+                <span class="text-white-50">135 ₺</span>
+              </div>
+            </div>
+
+            <div class="receipt-dashed-divider"></div>
+
+            <div class="d-flex justify-content-between text-white-50 small mb-1">
+              <span>Ara Toplam</span>
+              <span>230 ₺</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center fw-bold fs-6 pt-1">
+              <span>TOPLAM TUTAR</span>
+              <span style="color: var(--cafe-primary);">230 ₺</span>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary w-100 py-2" data-bs-dismiss="modal">Tamam</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
