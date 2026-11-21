@@ -5,8 +5,11 @@ Carousel [https://getbootstrap.com/docs/5.3/examples/carousel/] ve
 Sign-in [https://getbootstrap.com/docs/5.3/examples/sign-in/]
 şablonlarından yararlanarak bir kafe web sitesi hazırladım.
 
+Projedeki kodların yazımı ve özellik ekleme süreçlerinde yapay zekâdan destek alınmıştır. Bununla birlikte proje ham yapay zekâ çıktısıyla bırakılmamış; tasarım kurgusu ve özellik planlaması hem tarafımdan hem de yapay zekâ katkısıyla gerçekleştirilmiştir.
+
 Çalışmanın normal halinde sepete ürün ekleme, giriş yapma, kayıt olma, sürpriz çark, arama, sipariş tamamlama ve kupon uygulama/kaldırma gibi daha kapsamlı özellikler de tasarlamıştım; ancak proje kapsamında JavaScript kullanılmaması gerektiği için bu kısımları çıkarıp saf HTML, CSS ve Bootstrap yapısına uyarladım.
 
-Bahsettiğim daha kapsamlı sürümün bulunduğu GitHub deposuna da buradan ulaşabilirsiniz: https://github.com/arifocel16/Cafe-Website
+Bahsettiğim daha kapsamlı sürümün bulunduğu GitHub deposuna da buradan ulaşabilirsiniz:
+https://github.com/arifocel16/Cafe-Website
 
 İncelemeniz için şimdiden teşekkür ederim, beğeneceğinizi umarım.
